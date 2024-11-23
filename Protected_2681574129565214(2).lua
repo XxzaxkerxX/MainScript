@@ -331,7 +331,7 @@ R.TextSize = 34.000
 
 -- Scripts:
 
-local function HFVD_fake_script() -- Frame.LocalScript 
+local function YSIPOI_fake_script() -- Frame.LocalScript 
 	local script = Instance.new('LocalScript', Frame)
 
 	local Player = game.Players.LocalPlayer
@@ -500,6 +500,8 @@ local function HFVD_fake_script() -- Frame.LocalScript
 		end
 	end
 	
+	local teleportAndDragInProgress = false -- Flag to avoid overlapping actions
+	
 	local function StartTeleportAndDragLoop()
 		if teleportAndDragLoopRunning then
 			print("Teleport and drag loop is already running!")
@@ -514,49 +516,58 @@ local function HFVD_fake_script() -- Frame.LocalScript
 			local humanoidRootPart = Player.Character:WaitForChild("HumanoidRootPart")
 	
 			while teleportAndDragLoopRunning do
+				if teleportAndDragInProgress then
+					wait(0.1) -- Wait if another teleport/drag is in progress
+					continue
+				end
+	
+				teleportAndDragInProgress = true -- Block new teleport/drag actions
 				local characterPosition = humanoidRootPart.Position
 				local nearestPlank
 				local nearestDistance = math.huge
 				local plankFoundWithin17 = false
 	
-				-- Check for planks within the radius
+				-- Check for nearby planks
 				for _, plank in ipairs(selectedPlanks) do
-					if not plank.PrimaryPart then continue end -- Ensure PrimaryPart exists
+					if plank.PrimaryPart then
+						local plankPosition = plank.PrimaryPart.Position
+						local distance = (characterPosition - plankPosition).Magnitude
 	
-					local plankPosition = plank.PrimaryPart.Position
-					local distance = (characterPosition - plankPosition).Magnitude
-	
-					if distance <= maxDistance then
-						plankFoundWithin17 = true
-						break
-					elseif distance <= 50 and distance < nearestDistance then
-						nearestPlank = plank
-						nearestDistance = distance
+						if distance <= maxDistance then
+							-- Drag planks within 17 studs
+							remote:FireServer(plank)
+							plankFoundWithin17 = true
+						elseif distance <= 50 and distance < nearestDistance then
+							-- Track nearest plank outside 17 studs but within 50 studs
+							nearestPlank = plank
+							nearestDistance = distance
+						end
+					else
+						print("Plank without PrimaryPart detected, skipping.")
 					end
 				end
 	
-				-- If no plank is found within 17 studs, teleport to the nearest plank within 50 studs
-				if not plankFoundWithin17 and nearestPlank then
-					humanoidRootPart.Anchored = true
-					humanoidRootPart.CFrame = CFrame.new(nearestPlank.PrimaryPart.Position + Vector3.new(5, 3, 5))
-					print("Teleported to nearest plank at:", nearestPlank.PrimaryPart.Position)
+				if not plankFoundWithin17 then
+					if nearestPlank then
+						-- Teleport to nearest plank if none are within 17 studs
+						humanoidRootPart.Anchored = true
+						humanoidRootPart.CFrame = CFrame.new(nearestPlank.PrimaryPart.Position + Vector3.new(5, 3, 5))
+						print("Teleported to nearest plank at:", nearestPlank.PrimaryPart.Position)
 	
-					-- Run DragAndMovePlanks
-					DragAndMovePlanks()
-	
-					-- Add a delay to prevent rapid teleports
-					wait(1)
+						-- Handle teleportation of planks
+						DragAndMovePlanks()
+						humanoidRootPart.Anchored = false
+					else
+						print("No planks found within 50 studs!")
+					end
 				end
 	
-				-- Small delay to avoid overloading
-				wait(0.1)
+				teleportAndDragInProgress = false -- Allow new actions
+				wait(0.1) -- Add delay to prevent overload
 			end
-	
-			-- Unanchor the HumanoidRootPart when the loop stops
-			humanoidRootPart.Anchored = false
-			print("Teleport and drag loop stopped!")
 		end)()
 	end
+	
 	
 	local function StopTeleportAndDragLoop()
 		teleportAndDragLoopRunning = false
@@ -610,8 +621,8 @@ local function HFVD_fake_script() -- Frame.LocalScript
 		VariablesFrame.Visible = true
 	end)
 end
-coroutine.wrap(HFVD_fake_script)()
-local function OYKBPP_fake_script() -- Fly.LocalScript 
+coroutine.wrap(YSIPOI_fake_script)()
+local function BXWHM_fake_script() -- Fly.LocalScript 
 	local script = Instance.new('LocalScript', Fly)
 
 	local button = script.Parent
@@ -620,8 +631,8 @@ local function OYKBPP_fake_script() -- Fly.LocalScript
 		loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\40\39\104\116\116\112\115\58\47\47\103\105\115\116\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\109\101\111\122\111\110\101\89\84\47\98\102\48\51\55\100\102\102\57\102\48\97\55\48\48\49\55\51\48\52\100\100\100\54\55\102\100\99\100\51\55\48\47\114\97\119\47\101\49\52\101\55\52\102\52\50\53\98\48\54\48\100\102\53\50\51\51\52\51\99\102\51\48\98\55\56\55\48\55\52\101\98\51\99\53\100\50\47\97\114\99\101\117\115\37\50\53\50\48\120\37\50\53\50\48\102\108\121\37\50\53\50\48\50\37\50\53\50\48\111\98\102\108\117\99\97\116\111\114\39\41\44\116\114\117\101\41\41\40\41\10\10")()
 	end)
 end
-coroutine.wrap(OYKBPP_fake_script)()
-local function AOUBK_fake_script() -- Movement_2.LocalScript 
+coroutine.wrap(BXWHM_fake_script)()
+local function TTWH_fake_script() -- Movement_2.LocalScript 
 	local script = Instance.new('LocalScript', Movement_2)
 
 	local frame = script.Parent
@@ -674,8 +685,8 @@ local function AOUBK_fake_script() -- Movement_2.LocalScript
 		frame.Visible = false
 	end)
 end
-coroutine.wrap(AOUBK_fake_script)()
-local function LYIWMXJ_fake_script() -- Variables_2.LocalScript 
+coroutine.wrap(TTWH_fake_script)()
+local function YPFFTYI_fake_script() -- Variables_2.LocalScript 
 	local script = Instance.new('LocalScript', Variables_2)
 
 	local frame = script.Parent
@@ -691,4 +702,4 @@ local function LYIWMXJ_fake_script() -- Variables_2.LocalScript
 		frame.Visible = false
 	end)
 end
-coroutine.wrap(LYIWMXJ_fake_script)()
+coroutine.wrap(YPFFTYI_fake_script)()
