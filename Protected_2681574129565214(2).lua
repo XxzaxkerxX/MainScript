@@ -43,6 +43,10 @@ local UICorner_16 = Instance.new("UICorner")
 local MinusR = Instance.new("TextButton")
 local UICorner_17 = Instance.new("UICorner")
 local R = Instance.new("TextLabel")
+local Open_Close = Instance.new("Frame")
+local UICorner_18 = Instance.new("UICorner")
+local Open_Close_2 = Instance.new("TextButton")
+local UICorner_19 = Instance.new("UICorner")
 
 --Properties:
 
@@ -329,9 +333,32 @@ R.Font = Enum.Font.Unknown
 R.TextColor3 = Color3.fromRGB(255, 255, 255)
 R.TextSize = 34.000
 
+Open_Close.Name = "Open_Close"
+Open_Close.Parent = ScreenGui
+Open_Close.BackgroundColor3 = Color3.fromRGB(29, 29, 29)
+Open_Close.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Open_Close.BorderSizePixel = 0
+Open_Close.Position = UDim2.new(0.0211291425, 0, 0.412030578, 0)
+Open_Close.Size = UDim2.new(0, 100, 0, 47)
+
+UICorner_18.Parent = Open_Close
+
+Open_Close_2.Name = "Open_Close"
+Open_Close_2.Parent = Open_Close
+Open_Close_2.BackgroundColor3 = Color3.fromRGB(29, 29, 29)
+Open_Close_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Open_Close_2.BorderSizePixel = 0
+Open_Close_2.Size = UDim2.new(0, 100, 0, 47)
+Open_Close_2.Font = Enum.Font.Unknown
+Open_Close_2.Text = "Open/Close"
+Open_Close_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+Open_Close_2.TextSize = 21.000
+
+UICorner_19.Parent = Open_Close_2
+
 -- Scripts:
 
-local function YSIPOI_fake_script() -- Frame.LocalScript 
+local function YTLDQWZ_fake_script() -- Frame.LocalScript 
 	local script = Instance.new('LocalScript', Frame)
 
 	local Player = game.Players.LocalPlayer
@@ -621,8 +648,8 @@ local function YSIPOI_fake_script() -- Frame.LocalScript
 		VariablesFrame.Visible = true
 	end)
 end
-coroutine.wrap(YSIPOI_fake_script)()
-local function BXWHM_fake_script() -- Fly.LocalScript 
+coroutine.wrap(YTLDQWZ_fake_script)()
+local function EUEOK_fake_script() -- Fly.LocalScript 
 	local script = Instance.new('LocalScript', Fly)
 
 	local button = script.Parent
@@ -631,8 +658,8 @@ local function BXWHM_fake_script() -- Fly.LocalScript
 		loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\40\39\104\116\116\112\115\58\47\47\103\105\115\116\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\109\101\111\122\111\110\101\89\84\47\98\102\48\51\55\100\102\102\57\102\48\97\55\48\48\49\55\51\48\52\100\100\100\54\55\102\100\99\100\51\55\48\47\114\97\119\47\101\49\52\101\55\52\102\52\50\53\98\48\54\48\100\102\53\50\51\51\52\51\99\102\51\48\98\55\56\55\48\55\52\101\98\51\99\53\100\50\47\97\114\99\101\117\115\37\50\53\50\48\120\37\50\53\50\48\102\108\121\37\50\53\50\48\50\37\50\53\50\48\111\98\102\108\117\99\97\116\111\114\39\41\44\116\114\117\101\41\41\40\41\10\10")()
 	end)
 end
-coroutine.wrap(BXWHM_fake_script)()
-local function TTWH_fake_script() -- Movement_2.LocalScript 
+coroutine.wrap(EUEOK_fake_script)()
+local function SGTORIZ_fake_script() -- Movement_2.LocalScript 
 	local script = Instance.new('LocalScript', Movement_2)
 
 	local frame = script.Parent
@@ -685,8 +712,8 @@ local function TTWH_fake_script() -- Movement_2.LocalScript
 		frame.Visible = false
 	end)
 end
-coroutine.wrap(TTWH_fake_script)()
-local function YPFFTYI_fake_script() -- Variables_2.LocalScript 
+coroutine.wrap(SGTORIZ_fake_script)()
+local function ZRPVV_fake_script() -- Variables_2.LocalScript 
 	local script = Instance.new('LocalScript', Variables_2)
 
 	local frame = script.Parent
@@ -702,4 +729,30 @@ local function YPFFTYI_fake_script() -- Variables_2.LocalScript
 		frame.Visible = false
 	end)
 end
-coroutine.wrap(YPFFTYI_fake_script)()
+coroutine.wrap(ZRPVV_fake_script)()
+local function DKRK_fake_script() -- Open_Close.LocalScript 
+	local script = Instance.new('LocalScript', Open_Close)
+
+	local Gui = script.Parent.Parent
+	local Frame = Gui.Frame
+	local Button = script.Parent.Open_Close
+	local thisframe = script.Parent
+	local Movement = Gui.Movement
+	local Variables = Gui.Variables
+	local open = true
+	
+	Button.MouseButton1Click:Connect(function()
+		if open == true then
+			open = false
+			Frame.Visible = false
+			Movement.Visible = false
+			Variables.Visible = false
+		else
+			open = true
+			Frame.Visible = true
+			Movement.Visible = true
+			Variables.Visible = true
+		end
+	end)
+end
+coroutine.wrap(DKRK_fake_script)()
